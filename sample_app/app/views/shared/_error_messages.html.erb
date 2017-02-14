@@ -1,0 +1,12 @@
+<% if @user.errors.any? %> <!-- anyはemptyの逆-->
+    <div id="error_explanation">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@user.errors.count, "error") %>.<!-- pluralizeはcountが1なら単数形、それ以外なら複数形に第二引数を整形してくれる-->
+      </div>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>
