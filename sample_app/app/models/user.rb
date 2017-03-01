@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy # dependent: :destroyは、userが削除された際、子要素も自動的に削除する
   # attr_accessorはプロパティ(クラスが持つ変数)
   attr_accessor :remember_token, :activation_token, :reset_token
   # モデルのsaveが実行される前の処理
@@ -69,6 +70,12 @@ class User < ApplicationRecord
   # パスワード再設定の期限が切れている場合はtrueを返す
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+
+  # 試作feedの定義
+  # 完全な実装は次章の「ユーザーをフォローする」を参照
+  def feed
+    Micropost.where("user_id = ?", id)
   end
 
   private

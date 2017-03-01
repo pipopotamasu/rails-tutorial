@@ -10,6 +10,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def new
@@ -55,16 +56,6 @@ class UsersController < ApplicationController
     # requireはテーブルの指定
     def user_params
       params.require(:user).permit(:name, :email, :password, :password_confirmation)
-    end
-
-    # ログイン済みユーザーかどうか確認
-    def logged_in_user
-      # unlessは真偽値が偽の時に実行される
-      unless logged_in?
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
     end
 
     # 正しいユーザーかどうか確認
